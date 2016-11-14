@@ -1,0 +1,23 @@
+---
+author: livingmethod
+comments: true
+date: 2015-07-20 08:01:54+00:00
+layout: post
+link: http://blog.jblee.kr/2015/07/20/iptime-1025-cdm/
+slug: iptime-1025-cdm
+title: Iptime 1025 CDM
+wordpress_id: 100
+categories:
+- Benchmark
+- Tech
+tags:
+- CDM
+- Iptime1025
+---
+
+[![](https://livingmethod.files.wordpress.com/2015/07/img_1675.png)](https://livingmethod.files.wordpress.com/2015/07/img_1675.png) 
+위 스크린샷은 i5-4670 cpu기반인 메인PC에서 Iptime 1025 + Toshiba2.5" 를 CDM 돌려본 결과이다.
+
+USB2.0의 이론상 최대속도는 480Mbps로, 60MB/s의 속도를 의미한다. 하지만, 스크린샷에서 보인 속도는 40MB/s가 고작이다.
+
+USB3.0을 사용하다 이것을 사용하니 느려보이기만 한다.

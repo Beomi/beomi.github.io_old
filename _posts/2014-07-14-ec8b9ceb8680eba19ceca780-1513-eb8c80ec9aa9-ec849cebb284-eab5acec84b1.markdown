@@ -1,0 +1,42 @@
+---
+author: livingmethod
+comments: true
+date: 2014-07-14 22:22:28+00:00
+layout: post
+link: http://blog.jblee.kr/2014/07/14/%ec%8b%9c%eb%86%80%eb%a1%9c%ec%a7%80-1513-%eb%8c%80%ec%9a%a9-%ec%84%9c%eb%b2%84-%ea%b5%ac%ec%84%b1/
+slug: '%ec%8b%9c%eb%86%80%eb%a1%9c%ec%a7%80-1513-%eb%8c%80%ec%9a%a9-%ec%84%9c%eb%b2%84-%ea%b5%ac%ec%84%b1'
+title: 시놀로지 1513+ 대용 서버 구성
+wordpress_id: 17
+categories:
+- Tech
+tags:
+- 시놀로지
+- 자작나스
+- NAS
+---
+
+[![image](https://livingmethod.files.wordpress.com/2014/07/wpid-screenshot_2014-07-15-00-08-25.png)](https://livingmethod.files.wordpress.com/2014/07/wpid-screenshot_2014-07-15-00-08-25.png)
+
+
+
+HDD, SSD포함 약 95만원의 구성.
+본체는 약 35만원으로 구성된 듯 하다.
+
+펜티엄 하스웰리프레시, Asus B85m 보드, 삼성전자4G램, 삼성840pro 128G, HGST NAS 4T*2, 시소닉파워로 구성하였다.
+
+운영체제는 윈7 or 윈2012 R2.
+S/W 관리가 편리한 윈도계열을 사용하는것이 편하실 성 싶다.
+
+-간단한 sw정리
+1. FileZilla Server
+ftp와 ftps서버 모두 되고, 오픈소스 프로젝트이며, 안정성과 편의성도 가장 뛰어나다.
+2. IIS + PHP + MySql
+윈도의 아파치라 부를수 있는 웹서버.
+하지만, 사실 훨씬 더 많은 기능이 숨어있기도 하다.
+3. Apache + PHP + MySql
+전형적인 APM(apache+php+mysql) 웹서버.
+보편적으로 노말한 사용자가 많이 사용하고, 웹 호스팅도 이 계열이 많다.
+
++a IIS vs Apache
+우선 사용환경에 따라 다를 수 있음을 유념하자.
+필자의 환경에서는 Cache로 정적 페이지 관리중이라 IIS가 빠른데, 여타 php등 동적반응은 아파치가 반응성이 빠르고 유저가 많다고 한다.
