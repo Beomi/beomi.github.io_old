@@ -16,6 +16,12 @@ categories:
 
 원문: [http://docs.celeryproject.org/en/latest/django/first-steps-with-django.html](http://docs.celeryproject.org/en/latest/django/first-steps-with-django.html)
 
+```
+유의사항: 현재(11.14) celery가 4.0버전으로 stable 릴리즈가 되었습니다.
+아래 문서는 3.1의 마지막 버전의 문서를 번역한 것입니다. 최신 문서는 곧 업데이트 될 예정입니다.
+```
+
+
 Celery는 공식적인 패키지로 django-celery를 제공합니다. 이 문서는 celery의 현재(2016.11)의 최신 버전인 3.1버전을 기준으로 하고 있습니다.
 
 ![celery_128](https://livingmethod.files.wordpress.com/2016/11/celery_128.png)
@@ -54,115 +60,82 @@ Celery를 장고 프로젝트에서 사용하시려면, 우선 Celery 라이브�
 
 만약 최신 장고프로젝트(django 1.10)의 형식을 따라 사용하고 계시다면,  장고 프로젝트는 아래와 같은 형태일 것입니다. (프로젝트 이름: 'proj')
 
-    
-    <span class="o">-</span> <span class="n">proj</span><span class="o">/</span>
-      <span class="o">-</span> <span class="n">proj</span><span class="o">/</span><span class="n">__init__</span><span class="o">.</span><span class="n">py</span>
-      <span class="o">-</span> <span class="n">proj</span><span class="o">/</span><span class="n">settings</span><span class="o">.</span><span class="n">py</span>
-      <span class="o">-</span> <span class="n">proj</span><span class="o">/</span><span class="n">urls</span><span class="o">.</span><span class="n">py</span>
-    <span class="o">-</span> <span class="n">manage</span><span class="o">.</span><span class="n">py
-    </span>
+```
+- proj/
+  - proj/__init__.py
+  - proj/settings.py
+  - proj/urls.py
+- manage.py
+```
 
 
 만약 이런 구조로 되어있다면, 추천하는 방법은 장고 프로젝트 폴더(proj/proj/)안에 celery.py파일을 생성하는 것입니다. 아래와 같이요.
 
-    
-    <span class="o">-</span> <span class="n">proj</span><span class="o">/</span>
-      <span class="o">-</span> <span class="n">proj</span><span class="o">/</span><span class="n">__init__</span><span class="o">.</span><span class="n">py</span>
-      <span class="o">-</span> <span class="n">proj</span><span class="o">/</span><span class="n">settings</span><span class="o">.</span><span class="n">py</span>
-      <span class="o">-</span> <span class="n">proj</span><span class="o">/</span><span class="n">urls</span><span class="o">.</span><span class="n">py
-    </span><strong>  - proj/celery.py
-    </strong><span class="o">-</span> <span class="n">manage</span><span class="o">.</span><span class="n">py</span>
-
+```
+- proj/
+  - proj/__init__.py
+  - proj/settings.py
+  - proj/urls.py
+  - proj/celery.py
+- manage.py
+```
 
 파일: proj/proj/celery.py
 
-    
-    <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
-    
-    <span class="kn">import</span> <span class="nn">os</span>
-    
-    <span class="kn">from</span> <span class="nn">celery</span> <span class="k">import</span> <span class="n">Celery</span>
-    
-    <span class="c1"># Django의 세팅 모듈을 Celery의 기본으로 사용하도록 등록합니다.</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">'DJANGO_SETTINGS_MODULE'</span><span class="p">,</span> <span class="s1">'proj.settings'</span><span class="p">)</span>
-    
-    <span class="kn">from</span> <span class="nn">django.conf</span> <span class="k">import</span> <span class="n">settings</span>  <span class="c1"># noqa</span>
-    
-    <span class="n">app</span> <span class="o">=</span> <span class="n">Celery</span><span class="p">(</span><span class="s1">'proj'</span><span class="p">)</span>
-    
-    <span class="c1"># 문자열로 등록한 이유는 Celery Worker가 Windows를 사용할 경우 </span>
-    <span class="c1"># 객체를 pickle로 묶을 필요가 없다는 것을 알려주기 위함입니다.</span>
-    <span class="n">app</span><span class="o">.</span><span class="n">config_from_object</span><span class="p">(</span><span class="s1">'django.conf:settings'</span><span class="p">)</span>
-    <span class="n">app</span><span class="o">.</span><span class="n">autodiscover_tasks</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">settings</span><span class="o">.</span><span class="n">INSTALLED_APPS</span><span class="p">)</span>
-    
-    
-    <span class="nd">@app</span><span class="o">.</span><span class="n">task</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">debug_task</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">'Request: </span><span class="si">{0!r}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">))
-    </span>
+```py
+from __future__ import absolute_import
+
+import os
+
+from celery import Celery
+
+# Django의 세팅 모듈을 Celery의 기본으로 사용하도록 등록합니다.
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'proj.settings')
+
+from django.conf import settings  # noqa
+
+app = Celery('proj')
+
+# 문자열로 등록한 이유는 Celery Worker가 Windows를 사용할 경우
+# 객체를 pickle로 묶을 필요가 없다는 것을 알려주기 위함입니다.
+app.config_from_object('django.conf:settings')
+app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
+
+
+@app.task(bind=True)
+def debug_task(self):
+    print('Request: {0!r}'.format(self.request))
+```
 
 
 위와같이 celery.py파일을 만드신 후에, 장고 프로젝트 폴더의 __init__.py 모듈에서 이 celery 앱을 import해와야 합니다. 이 과정은 장고가 시작될 때 @shared_task 데코레이터의 사용을 가능하게 합니다.
 
 파일: proj/proj/__init__.py
 
+```py
+from __future__ import absolute_import
 
-
-
-
-
-
-    
-    <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
-    
-    <span class="c1"># 아래 import는 장고가 시작될 때 항상 import되기 때문에 </span>
-    <span class="c1"># shared_task가 장고에서 작동하는 것을 가능하게 해 줍니다.</span>
-    <span class="kn">from</span> <span class="nn">.celery</span> <span class="k">import</span> <span class="n">app</span> <span class="k">as</span> <span class="n">celery_app # Celery를 import합니다.</span>
-    
-
-
-
-
-
-
-
+# 아래 import는 장고가 시작될 때 항상 import되기 때문에
+# shared_task가 장고에서 작동하는 것을 가능하게 해 줍니다.
+from .celery import app as celery_app # Celery를 import합니다.
+```
 
 참고로, 위에서 제시한 장고 프로젝트의 구조는 거대한 프로젝트에 적합합니다. 만약 [First Steps with Celery](http://docs.celeryproject.org/en/latest/getting-started/first-steps-with-celery.html#tut-celery) 튜토리얼처럼 작고 간단한 프로젝트라면, 한 모듈(한 파이썬 파일)에서 App과 Task를 모두 다루는 것도 괜찮습니다.
 
 자, 이제 우리가 여기서 처음으로 만든 모듈(celery.py)를 뜯어 보도록 합시다. 우선, 우리는 absolute import를 future에서 import 할 것입니다. 다른 library와 꼬이지 않게 위해서요.
 
 
-
-
-
-
-
-    
-    <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
-    
-
-
-
-
-
-
+```py
+from __future__ import absolute_import
+```
 
 
 그 다음에, 우리는 Celery의 커맨드라인 프로그램을 위해 기본 DJANGO_SETTINGS_MODULE을 가져와서 설정해줍니다.
 
 
-
-
-
-
-
-    
-    <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">'DJANGO_SETTINGS_MODULE'</span><span class="p">,</span> <span class="s1">'proj.settings'</span><span class="p">)</span>
-    
-
-
-
-
+```py
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'proj.settings')
+```
 
 
 
@@ -171,9 +144,10 @@ Celery를 장고 프로젝트에서 사용하시려면, 우선 Celery 라이브�
 
 이 다음에 우리가 해야하는 것은 App Instance 객체를 생성하는 겁니다.
 
-    
-    app = Celery('proj')
 
+```py
+app = Celery('proj')
+```
 
 위 코드는 celery 라이브러리의 인스턴스가 됩니다. 물론, 여러 다른이름으로 여러개의 인스턴스를 만들 수도 있습니다. 그런데, Django와 Celery를 사용할 때에는 하나만 만들어도 충분합니다.
 
@@ -187,12 +161,9 @@ Celery를 장고 프로젝트에서 사용하시려면, 우선 Celery 라이브�
 
 
 
-    
-    <span class="n">app</span><span class="o">.</span><span class="n">config_from_object</span><span class="p">(</span><span class="s1">'django.conf:settings'</span><span class="p">)</span>
-    
-
-
-
+```py
+app.config_from_object('django.conf:settings')
+```
 
 
 
@@ -203,32 +174,23 @@ Celery를 장고 프로젝트에서 사용하시려면, 우선 Celery 라이브�
 일반적으로, 재사용 가능한 앱을 만드는 것은 모든 작업 코드들을 다른 파일인, 예를들어 tasks.py와 같은 파일에 몰아두는 것입니다. 그리고 celery는 이 모듈들을 자동으로 찾을 수 있답니다.
 
 
-
-
-
-
-
-    
-    <span class="n">app</span><span class="o">.</span><span class="n">autodiscover_tasks</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">settings</span><span class="o">.</span><span class="n">INSTALLED_APPS</span><span class="p">)</span>
-    
-
-
-
-
+```py
+app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
+```
 
 
 
 
 위 코드로 celery는 자동적으로 장고 세팅에 재사용 가능한 앱에서 tasks.py를 찾을 겁니다.(단, task들이 있는 파일 이름이 tasks.py여야 자동으로 찾을 수 있습니다.)
 
-    
-    <span class="o">-</span> <span class="n">app1</span><span class="o">/</span>
-        <span class="o">-</span> <span class="n">app1</span><span class="o">/</span><span class="n">tasks</span><span class="o">.</span><span class="n">py</span>
-        <span class="o">-</span> <span class="n">app1</span><span class="o">/</span><span class="n">models</span><span class="o">.</span><span class="n">py</span>
-    <span class="o">-</span> <span class="n">app2</span><span class="o">/</span>
-        <span class="o">-</span> <span class="n">app2</span><span class="o">/</span><span class="n">tasks</span><span class="o">.</span><span class="n">py</span>
-        <span class="o">-</span> <span class="n">app2</span><span class="o">/</span><span class="n">models</span><span class="o">.</span><span class="n">py</span>
-
+```
+- app1/
+    - app1/tasks.py
+    - app1/models.py
+- app2/
+    - app2/tasks.py
+    - app2/models.py
+```
 
 이와 같은 모양으로, 각 앱 아래에 tasks.py를 두는 것입니다.
 
@@ -253,37 +215,23 @@ Celery를 장고 프로젝트에서 사용하시려면, 우선 Celery 라이브�
 
 demoapp/tasks.py
 
+```py
+from __future__ import absolute_import
 
+from celery import shared_task
 
+@shared_task
+def add(x, y):
+    return x + y
 
+@shared_task
+def mul(x, y):
+    return x * y
 
-
-
-    
-    <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
-    
-    <span class="kn">from</span> <span class="nn">celery</span> <span class="k">import</span> <span class="n">shared_task</span>
-    
-    <span class="nd">@shared_task</span>
-    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
-    
-    <span class="nd">@shared_task</span>
-    <span class="k">def</span> <span class="nf">mul</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span>
-    
-    <span class="nd">@shared_task</span>
-    <span class="k">def</span> <span class="nf">xsum</span><span class="p">(</span><span class="n">numbers</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span>
-    
-
-
-
-
-
-
-
-
+@shared_task
+def xsum(numbers):
+    return sum(numbers)
+```
 
 
 
@@ -316,33 +264,37 @@ django-celery라이브러리는 Django ORM와 Django Cache Framework를 Result B
 
 1. django-celery 라이브러리를 설치해 줍니다.
 
-    
-    $ pip install django-celery
 
+```
+$ pip install django-celery
+```
 
 2. djcelery를 INSTALLED_APPS(장고 프로젝트 settings.py)에 추가해 줍시다.
 
 3. 데이터베이스 테이블을 만들어 줍시다
 
-    
-    $ python manage.py migrate djcelery
 
+```    
+$ python manage.py migrate djcelery
+```
 
 4. Celery가 django-celery backend를 사용하도록 설정해줍시다.
 4-1. 만약 Database Backend를 이용하고 싶다면..
 
-    
-    <span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
-        <span class="n">CELERY_RESULT_BACKEND</span><span class="o">=</span><span class="s1">'djcelery.backends.database:DatabaseBackend'</span><span class="p">,</span>
-    <span class="p">)</span>
+```py
+app.conf.update(
+    CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend',
+)
+```
 
 
 4-2. 만약 Cache Backend를 이용하고 싶다면..
 
-    
-    <span class="n">app</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
-        <span class="n">CELERY_RESULT_BACKEND</span><span class="o">=</span><span class="s1">'djcelery.backends.cache:CacheBackend'</span><span class="p">,</span>
-    <span class="p">)</span>
+```py
+app.conf.update(
+    CELERY_RESULT_BACKEND='djcelery.backends.cache:CacheBackend',
+)
+```
 
 
 4-3. 만약 Celery를 Django settings에 직접 연결해 두었다면 app.conf.update부분 없이 바로 괄호 안의 문구를 settings.py안에 넣어두기만 하면 됩니다.
@@ -376,9 +328,9 @@ __추가정보: [Automatic naming and relative imports](http://docs.celeryproje
 
 
 
-    
-    $ celery -A proj worker -l info
-
+```sh
+$ celery -A proj worker -l info
+```
 
 
 
@@ -389,9 +341,9 @@ __추가정보: [Automatic naming and relative imports](http://docs.celeryproje
 
 
 
-    
-    $ celery help
-
+```sh
+$ celery help
+```
 
 라고 쳐 봅시다.
 
