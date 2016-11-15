@@ -2,8 +2,9 @@
 title: '[번역]#01: 시작하기'
 date: 2016-11-15 16:00:00+09:00
 layout: post
-category: react-native
-next:
+categories:
+- react-native
+- Translation
 ---
 
 
