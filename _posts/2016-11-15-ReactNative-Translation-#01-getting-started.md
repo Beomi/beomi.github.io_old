@@ -4,7 +4,6 @@ date: 2016-11-15 16:00:00+09:00
 layout: post
 categories:
 - Translation
-- react-native
 ---
 
 
