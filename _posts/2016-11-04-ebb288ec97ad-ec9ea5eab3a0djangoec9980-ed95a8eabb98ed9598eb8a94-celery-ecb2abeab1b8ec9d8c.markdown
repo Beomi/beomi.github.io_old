@@ -82,7 +82,7 @@ Celery를 장고 프로젝트에서 사용하시려면, 우선 Celery 라이브�
 
 파일: proj/proj/celery.py
 
-```py
+```python
 from __future__ import absolute_import
 
 import os
