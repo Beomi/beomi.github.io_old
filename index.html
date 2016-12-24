@@ -5,4 +5,6 @@ layout: post
 
 {% for post in site.posts %}
 <h3><a href="{{post.url | prepend: site.baseurl}}">{{post.title}}</a></h3>
+<span style="color:#777;">{{post.date | date: '%B %d, %Y'}}</span>
+<hr noshade size="1" color="#ccc">
 {% endfor %}
