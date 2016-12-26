@@ -1,5 +1,5 @@
 ---
-title: '[DjangoTDDStudy]#00: 스터디를 시작하며'
+title: '[DjangoTDDStudy] #00: 스터디를 시작하며'
 date: 2016-12-27 00:30:00+09:00
 layout: post
 categories:
