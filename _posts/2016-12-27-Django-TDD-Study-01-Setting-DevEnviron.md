@@ -40,7 +40,7 @@ Selenium은 기본적으로 Firefox 드라이버를 내장하고있다. 이 'Dri
 현재 Selenium은 대다수의 모던 웹브라우저들(Chrome, Firefox, IE, Edge, Phantomjs, etc.)을 지원하고 있기 때문에, 일상적으로 사용하는 크롬드라이버를 사용하기로 했다.
 (만약 Headless Browser를 이용해야 한다면 [Phantomjs](http://phantomjs.org/)를 이용해보자.)
 
-크롬드라이버는 [https://sites.google.com/a/chromium.org/chromedriver/downloads](https://sites.google.com/a/chromium.org/chromedriver/downloads)에서 최신 버전으로 받을 수 있고, 이번 스터디에서는 Chrome v54에서 v56까지를 지원하는 ChromeDriver 2.27버전을 이용하려 한다.
+크롬드라이버는 [크로미움의 ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/downloads)에서 최신 버전으로 받을 수 있고, 이번 스터디에서는 Chrome v54에서 v56까지를 지원하는 ChromeDriver 2.27버전을 이용하려 한다.
 
 크롬드라이버는 어떤 파일을 설치하는 것이 아니라, Binary가 내장되어있는 하나의 실행파일이라고 보면 된다.
 
