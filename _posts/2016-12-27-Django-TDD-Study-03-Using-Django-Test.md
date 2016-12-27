@@ -4,6 +4,7 @@ date: 2016-12-27 11:40:00+09:00
 layout: post
 categories:
 - DjangoTDDStudy
+published: false
 ---
 
 
