@@ -155,7 +155,7 @@ else: # JSON env
 위에서 지정한 FACEBOOK_KEY들을 SocialLogin에 할당해 줍니다.
 
 ```py
-### SocialLogin: Facebook
+# SocialLogin: Facebook
 SOCIAL_AUTH_FACEBOOK_KEY = FACEBOOK_KEY
 SOCIAL_AUTH_FACEBOOK_SECRET = FACEBOOK_SECRET
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
@@ -163,7 +163,7 @@ SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
   'fields': 'id, name, email'
 }
 
-#### SocialLogin: Google
+# SocialLogin: Google
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = GOOGLE_KEY
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = GOOGLE_SECRET
 SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = ['email']
@@ -197,8 +197,8 @@ urlpatterns = [
 위 코드들을 추가해주는 것 만으로도 기본적인 Social Login기능은 완성되었습니다. 이제 Template에서 호출을 해봅시다.
 
 ```html
-<a href="{% url "social:begin" "google-oauth2" %}"><button class="btn btn-danger" style="width: 40%">G+ Login</button></a>
-<a href="{% url "social:begin" "facebook" %}"><button class="btn btn-primary" style="width: 40%">FB Login</button></a>
+{% raw %}<a href="{% url "social:begin" "google-oauth2" %}"><button class="btn btn-danger" style="width: 40%">G+ Login</button></a>
+<a href="{% url "social:begin" "facebook" %}"><button class="btn btn-primary" style="width: 40%">FB Login</button></a>{% endraw %}
 ```
 
 이와 같이 button을 등록해 호출할 수 있습니다.
