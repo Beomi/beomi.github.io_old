@@ -262,3 +262,14 @@ notices = soup.select('div.p_inr > div.p_info > a > span')
 for n in notices:
     print(n.text.strip())
 ```
+
+# 다음 가이드
+---
+
+Selenium으로 많은 사이트에서 여러 정보를 가져와 볼 수 있게 되었습니다. 
+
+하지만 가져온 데이터를 DB에 저장하려면 약간의 어려움이 따르게 됩니다.
+
+다음 시간에는 Django의 ORM을 이용해 sqlite3 DB에 데이터를 저장해보는 방법에 대해 알아보겠습니다.
+
+다음 가이드: [나만의 웹 크롤러 만들기(4): Django로 크롤링한 데이터 저장하기](https://beomi.github.io/python/2017/02/28/HowToMakeWebCrawler-Save-with-Django.html)

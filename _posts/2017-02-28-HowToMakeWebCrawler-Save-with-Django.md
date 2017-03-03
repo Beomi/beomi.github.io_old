@@ -11,6 +11,8 @@ published: true
 <img src="/img/2017-02-27-HowToMakeWebCrawler-Save-with-Django/python+django.jpg" style="max-height:256px;" />
 </p>
 
+이전게시글: [나만의 웹 크롤러 만들기(3): Selenium으로 무적 크롤러 만들기](/python/2017/01/19/HowToMakeWebCrawler-With-Selenium.html)
+
 Python을 이용해 `requests`와 `selenium`을 이용해 웹 사이트에서 데이터를 크롤링해 보았습니다.
 
 하지만 이러한 데이터를 체계적으로 관리하려면 DB가 필요하고, 이러한 DB를 만들고 관리하는 방법이 여러가지가 있지만 이번 가이드에서는 Python 웹 프레임워크인 `django`의 Database ORM을 이용해 DB를 만들고 데이터를 저장해 보려 합니다.
